@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-us"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="description" content="Imagine you have 10 columns with long arrays that you would like to put together into one json field.
+SELECT
+    *,
+    arrayMap(x -&gt; x &#43; 1, range(length(params1))) as len,
+    arrayMap(x -&gt;  arrayFilter(y -&gt; y != &#39;&#39;, x),arrayMap(x -&gt; array(arrayElement(params1, x),
+                        arrayElement(params2, x),
+                        arrayElement(params3, x),
+                        arrayElement(params4, x),
+                        arrayElement(params5, x),
+                        arrayElement(params6, x),
+                        arrayElement(params7, x),
+                        arrayElement(params8, x),
+                        arrayElement(params9, x),
+                        arrayElement(params10, x)), len)) as array_array,
+        arrayMap(x -&gt; x[-1], array_array) as value,
+        arrayMap(x -&gt; arrayStringConcat(x, &#39;_&#39;), arrayMap(x -&gt; arrayPopBack(x), array_array)) as key,
+        arrayMap(x -&gt; arrayStringConcat(x, &#39;&#34;:&#34;&#39;), arrayMap(x -&gt; array(arrayElement(key, x), arrayElement(value, x)), len)) as tmp,
+        replaceAll(replaceOne(replaceOne(toString(tmp), &#39;[&#39;, &#39;{&#39;), &#39;]&#39;, &#39;}&#39;), &#39;\&#39;&#39;, &#39;&#34;&#39;) as tmp_json,
+        if(tmp_json = &#39;{&#34;&#34;:&#34;&#34;}&#39;, &#39;&#39;, tmp_json) as params_json
+FROM table
+">  
+
+  <title>
+    
+      clikhouse: changing arrays to JSON
+    
+  </title>
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/" />
+  
+  
+  
+  <link rel="stylesheet" href="/css/main.900100e9dbee2d56c58fac8bb717037cae7e26a9c36c29d2ff587bdd65f0cbbe510b41d81a3bb234919cdfdc7550d786b2fab70c8fc507772d732fe097106d12.css" integrity="sha512-kAEA6dvuLVbFj6yLtxcDfK5&#43;JqnDbCnS/1h73WXwy75RC0HYGjuyNJGc39x1UNeGsvq3DI/FB3ctcy/glxBtEg==" />
+  
+</head>
+<body a="white">
+        <main class="page-content" aria-label="Content">
+            <div class="w">
+                <div class="post-meta">
+                    <a href="/">帰る</a>
+
+                    <p>
+                        <time datetime="2022-01-06 00:00:00 &#43;0800 &#43;0800">
+                            2022
+                        </time>
+                    </p>
+                </div>
+
+<article>
+    <h1>clikhouse: changing arrays to JSON</h1>
+
+    
+
+    <p>Imagine you have 10 columns with long arrays that you would like to put together into one json field.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>,
+</span></span><span style="display:flex;"><span>    arrayMap(x <span style="color:#f92672">-&gt;</span> x <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, range(<span style="color:#66d9ef">length</span>(params1))) <span style="color:#66d9ef">as</span> len,
+</span></span><span style="display:flex;"><span>    arrayMap(x <span style="color:#f92672">-&gt;</span>  arrayFilter(y <span style="color:#f92672">-&gt;</span> y <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;&#39;</span>, x),arrayMap(x <span style="color:#f92672">-&gt;</span> array(arrayElement(params1, x),
+</span></span><span style="display:flex;"><span>                        arrayElement(params2, x),
+</span></span><span style="display:flex;"><span>                        arrayElement(params3, x),
+</span></span><span style="display:flex;"><span>                        arrayElement(params4, x),
+</span></span><span style="display:flex;"><span>                        arrayElement(params5, x),
+</span></span><span style="display:flex;"><span>                        arrayElement(params6, x),
+</span></span><span style="display:flex;"><span>                        arrayElement(params7, x),
+</span></span><span style="display:flex;"><span>                        arrayElement(params8, x),
+</span></span><span style="display:flex;"><span>                        arrayElement(params9, x),
+</span></span><span style="display:flex;"><span>                        arrayElement(params10, x)), len)) <span style="color:#66d9ef">as</span> array_array,
+</span></span><span style="display:flex;"><span>        arrayMap(x <span style="color:#f92672">-&gt;</span> x[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], array_array) <span style="color:#66d9ef">as</span> value,
+</span></span><span style="display:flex;"><span>        arrayMap(x <span style="color:#f92672">-&gt;</span> arrayStringConcat(x, <span style="color:#e6db74">&#39;_&#39;</span>), arrayMap(x <span style="color:#f92672">-&gt;</span> arrayPopBack(x), array_array)) <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">key</span>,
+</span></span><span style="display:flex;"><span>        arrayMap(x <span style="color:#f92672">-&gt;</span> arrayStringConcat(x, <span style="color:#e6db74">&#39;&#34;:&#34;&#39;</span>), arrayMap(x <span style="color:#f92672">-&gt;</span> array(arrayElement(<span style="color:#66d9ef">key</span>, x), arrayElement(value, x)), len)) <span style="color:#66d9ef">as</span> tmp,
+</span></span><span style="display:flex;"><span>        replaceAll(replaceOne(replaceOne(toString(tmp), <span style="color:#e6db74">&#39;[&#39;</span>, <span style="color:#e6db74">&#39;{&#39;</span>), <span style="color:#e6db74">&#39;]&#39;</span>, <span style="color:#e6db74">&#39;}&#39;</span>), <span style="color:#e6db74">&#39;\&#39;&#39;, &#39;</span><span style="color:#e6db74">&#34;&#39;) as tmp_json,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        if(tmp_json = &#39;{&#34;&#34;:&#34;&#34;}&#39;, &#39;&#39;, tmp_json) as params_json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">FROM table
+</span></span></span></code></pre></div>
+</article>
+
+            </div>
+        </main>
+    </body></html>

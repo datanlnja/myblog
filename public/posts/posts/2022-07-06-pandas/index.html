@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-us"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="description" content="Reading big data
+A very useful feature of Pandas is iterating over a dataframe, if suddenly it doesn&rsquo;t fit into memory (it often happens in real work).
+data_iter = pd.read_csv(&#39;babynames.csv&#39;, chunksize=1000)
+
+def data_prep(df, func):
+    &#34;&#34;&#34; Filtering data 
+    &#34;&#34;&#34;
+    for chunk in df:
+        tmp = func(chunk)
+        tmp.to_csv(&#39;dataset.csv&#39;)
+        
+def func_filter(data):
+    return data.head(5)
+
+data_prep(data_iter, func_filter)
+Reducing the size of a data frame
+When reading a table in pandas there is a possibility to influence the size of the occupied data by reducing the amount of memory allocated, but you should be careful with this, if you have very large numbers, reducing 64 bits to 32 can simply cause an overflow and incorrect data. A small benchmark is better here.">  
+
+  <title>
+    
+      python: cooking pandas
+    
+  </title>
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/" />
+  
+  
+  
+  <link rel="stylesheet" href="/css/main.900100e9dbee2d56c58fac8bb717037cae7e26a9c36c29d2ff587bdd65f0cbbe510b41d81a3bb234919cdfdc7550d786b2fab70c8fc507772d732fe097106d12.css" integrity="sha512-kAEA6dvuLVbFj6yLtxcDfK5&#43;JqnDbCnS/1h73WXwy75RC0HYGjuyNJGc39x1UNeGsvq3DI/FB3ctcy/glxBtEg==" />
+  
+</head>
+<body a="white">
+        <main class="page-content" aria-label="Content">
+            <div class="w">
+                <div class="post-meta">
+                    <a href="/">帰る</a>
+
+                    <p>
+                        <time datetime="2020-01-06 00:00:00 &#43;0800 &#43;0800">
+                            2020
+                        </time>
+                    </p>
+                </div>
+
+<article>
+    <h1>python: cooking pandas</h1>
+
+    
+
+    <p><strong>Reading big data</strong></p>
+<p>A very useful feature of Pandas is iterating over a dataframe, if suddenly it doesn&rsquo;t fit into memory (it often happens in real work).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data_iter <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;babynames.csv&#39;</span>, chunksize<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">data_prep</span>(df, func):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34; Filtering data 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> chunk <span style="color:#f92672">in</span> df:
+</span></span><span style="display:flex;"><span>        tmp <span style="color:#f92672">=</span> func(chunk)
+</span></span><span style="display:flex;"><span>        tmp<span style="color:#f92672">.</span>to_csv(<span style="color:#e6db74">&#39;dataset.csv&#39;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">func_filter</span>(data):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> data<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data_prep(data_iter, func_filter)
+</span></span></code></pre></div><p><strong>Reducing the size of a data frame</strong></p>
+<p>When reading a table in pandas there is a possibility to influence the size of the occupied data by reducing the amount of memory allocated, but you should be careful with this, if you have very large numbers, reducing 64 bits to 32 can simply cause an overflow and incorrect data. A small benchmark is better here.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Load data</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;babynames.csv&#39;</span>)
+</span></span><span style="display:flex;"><span>data<span style="color:#f92672">.</span>info()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">pandas</span><span style="color:#f92672">.</span>core<span style="color:#f92672">.</span>frame<span style="color:#f92672">.</span>DataFrame<span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span>RangeIndex: <span style="color:#ae81ff">1690784</span> entries, <span style="color:#ae81ff">0</span> to <span style="color:#ae81ff">1690783</span>
+</span></span><span style="display:flex;"><span>Data columns (total <span style="color:#ae81ff">4</span> columns):
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#   Column  Non-Null Count    Dtype </span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">---</span>  <span style="color:#f92672">------</span>  <span style="color:#f92672">--------------</span>    <span style="color:#f92672">-----</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">0</span>   Name    <span style="color:#ae81ff">1690784</span> non<span style="color:#f92672">-</span>null  object
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span>   Gender  <span style="color:#ae81ff">1690784</span> non<span style="color:#f92672">-</span>null  object
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span>   Count   <span style="color:#ae81ff">1690784</span> non<span style="color:#f92672">-</span>null  int64 
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">3</span>   Year    <span style="color:#ae81ff">1690784</span> non<span style="color:#f92672">-</span>null  int64 
+</span></span><span style="display:flex;"><span>dtypes: int64(<span style="color:#ae81ff">2</span>), object(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>memory usage: <span style="color:#ae81ff">51.6</span><span style="color:#f92672">+</span> MB <span style="color:#f92672">&lt;&lt;&lt;&lt;&lt;&lt;</span> HERE
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Load data with optimise Gender column</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;babynames.csv&#39;</span>, dtype<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;Name&#39;</span>: object, <span style="color:#e6db74">&#39;Gender&#39;</span>: <span style="color:#e6db74">&#39;category&#39;</span>,<span style="color:#e6db74">&#39;Count&#39;</span>: <span style="color:#e6db74">&#39;int32&#39;</span>,<span style="color:#e6db74">&#39;Year&#39;</span>: <span style="color:#e6db74">&#39;int16&#39;</span>})
+</span></span><span style="display:flex;"><span>data<span style="color:#f92672">.</span>info()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">pandas</span><span style="color:#f92672">.</span>core<span style="color:#f92672">.</span>frame<span style="color:#f92672">.</span>DataFrame<span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span>RangeIndex: <span style="color:#ae81ff">1690784</span> entries, <span style="color:#ae81ff">0</span> to <span style="color:#ae81ff">1690783</span>
+</span></span><span style="display:flex;"><span>Data columns (total <span style="color:#ae81ff">4</span> columns):
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#   Column  Non-Null Count    Dtype   </span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">---</span>  <span style="color:#f92672">------</span>  <span style="color:#f92672">--------------</span>    <span style="color:#f92672">-----</span>   
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">0</span>   Name    <span style="color:#ae81ff">1690784</span> non<span style="color:#f92672">-</span>null  object  
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span>   Gender  <span style="color:#ae81ff">1690784</span> non<span style="color:#f92672">-</span>null  category
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span>   Count   <span style="color:#ae81ff">1690784</span> non<span style="color:#f92672">-</span>null  int32   
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">3</span>   Year    <span style="color:#ae81ff">1690784</span> non<span style="color:#f92672">-</span>null  int16   
+</span></span><span style="display:flex;"><span>dtypes: category(<span style="color:#ae81ff">1</span>), int16(<span style="color:#ae81ff">1</span>), int32(<span style="color:#ae81ff">1</span>), object(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>memory usage: <span style="color:#ae81ff">24.2</span><span style="color:#f92672">+</span> MB <span style="color:#f92672">&lt;&lt;&lt;&lt;&lt;&lt;</span> HERE
+</span></span></code></pre></div><p>So what have we done? By default Pandas allocates 64 bits to Int for each value, we have lowered this to 32 and 16 respectively. And we also changed the Gender type to category, this type is very useful if your column has low granularity, then you can significantly reduce the size, the point is that each value will be encoded as a number, and the text will lie as a dictionary separately.</p>
+<p>So we managed to reduce the size by 2 times, good result!</p>
+<p><strong>Parsing the date when reading</strong></p>
+<p>Correct date parsing and datetime column type, which will reduce the size of your DF (in my practice there was a real case when in financial data from 1C, God forgive me, the date was in a very strange form, and parsed in such a way that the month became a day and everything got mixed up). In general, specify explicitly, it may be longer from the point of view of reading the date frame, but it is obvious and will help to reduce space on the disc.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">%</span>time
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Let dateutils figure out how to parse the date on its own</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;babynames_time_test.csv&#39;</span>, parse_dates<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;Year&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CPU times: user <span style="color:#ae81ff">3</span> µs, sys: <span style="color:#ae81ff">0</span> ns, total: <span style="color:#ae81ff">3</span> µs
+</span></span><span style="display:flex;"><span>Wall time: <span style="color:#ae81ff">7.15</span> µs
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">%</span>time
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Telling him how to make out the date</span>
+</span></span><span style="display:flex;"><span>date_parse_func <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> x: pd<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>strptime(x, <span style="color:#e6db74">&#34;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#34;</span>)
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;babynames_time_test.csv&#39;</span>, parse_dates<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;Year&#39;</span>], date_parser<span style="color:#f92672">=</span>date_parse_func)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CPU times: user <span style="color:#ae81ff">3</span> µs, sys: <span style="color:#ae81ff">0</span> ns, total: <span style="color:#ae81ff">3</span> µs
+</span></span><span style="display:flex;"><span>Wall time: <span style="color:#ae81ff">6.68</span> µs
+</span></span></code></pre></div><p>Link to the Jupiter laptop I used</p>
+<p><a href="https://github.com/datanlnja/helpful_notebook/blob/main/pandas_optimisation.ipynb">https://github.com/datanlnja/helpful_notebook/blob/main/pandas_optimisation.ipynb</a></p>
+
+</article>
+
+            </div>
+        </main>
+    </body></html>

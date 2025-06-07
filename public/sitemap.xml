@@ -2,17 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://example.com/posts/my-first-post/</loc>
-    <lastmod>2025-06-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://example.com/posts/</loc>
-    <lastmod>2025-06-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://example.com/</loc>
+    <loc>http://localhost:1313/</loc>
     <lastmod>2022-08-25T21:30:04+08:00</lastmod>
   </url><url>
-    <loc>https://example.com/categories/</loc>
+    <loc>http://localhost:1313/posts/posts/2022-07-06-clickhouse-json-change/</loc>
+    <lastmod>2022-01-06T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://example.com/tags/</loc>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2022-01-06T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/posts/2022-07-06-clickhouse-json-change-copy/</loc>
+    <lastmod>2021-01-06T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/posts/2022-07-06-postgres/</loc>
+    <lastmod>2021-01-06T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/posts/2020-07-06-strange-post/</loc>
+    <lastmod>2020-01-06T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/posts/2022-07-06-pandas/</loc>
+    <lastmod>2020-01-06T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
   </url>
 </urlset>
