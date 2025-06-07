@@ -1,0 +1,4 @@
+baseURL = 'https://example.com/'  # поменяешь позже на свой домен
+languageCode = 'en-us'
+title = 'My Hugo Blog'
+theme = 'nostyleplease'
